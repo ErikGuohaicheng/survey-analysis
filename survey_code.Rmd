@@ -1,0 +1,352 @@
+---
+title: "Phd survey"
+author: "Haicheng Guo"
+date: "2024-01-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+
+```{r import data }
+setwd("D:/RA/Phd_survey")
+## manually delete the second and third rows (about notes) before importing data 
+data <- read.csv("test_data.csv", header = TRUE)
+
+```
+
+
+
+
+
+## Including Plots
+
+
+
+
+```{r Question1, echo=TRUE  }
+## The options for these questions measure the degree of respondent agreement or disagreement, and to show the degree to which respondents agreed with each aspect of the academic experience, I calculated the mean of the answer scores for each aspect and used bar charts to show the differences in the mean scores for the different aspects of the scores.
+
+## In this question, the higher the score for each indicator, the higher the average level of satisfaction across all respondents.
+
+library(ggplot2)
+
+## fill missing value（"Not applicable" answer）as 0 (if needed). This makes the mean calculation independent of missing values, and adding zeros does not change the calculated mean value.
+
+#data$Q1_6[is.na(data$Q1_6)] <- 0
+#data$Q1_7[is.na(data$Q1_7)] <- 0
+
+##Simplify question options to words for better display in bar charts
+
+# The overall academic quality of the courses offered in the program is good. - Course quality
+# My program offers enough courses in my research field. - Course quantity
+# I have access to a good range of seminars in my research area. - Access to seminars
+# I have frequent opportunities to discuss my research with faculties within my institution (in addition to my supervisor). - Access to other faculties
+# I find the interactions with other faculty members useful. - Productive discussions with faculties
+# I have frequent opportunities to discuss my research with other research students. - Access to other students
+# I have frequent opportunities to discuss my research with researchers outside my institution (e.g., seminar speakers). -  Access to other researchers
+
+
+# selected question columns for generating mean value
+selected_columns_Q1 <- c("Q1_1", "Q1_2", "Q1_3", "Q1_4", "Q1_5", "Q1_6", "Q1_7")
+
+# calculate mean values
+mean_values_Q1 <- colMeans(data[selected_columns_Q1])
+
+# bar plot
+bar_plot_Q1 <- ggplot() +
+  geom_bar(data = data.frame(mean_values_Q1), aes(x =c("Course quality", "Course quantity", "Access to seminars", "Access to other faculties", "Productive discussions with faculties", "Access to other students", " Access to other researchers"), y = mean_values_Q1),
+           stat = "identity", fill = "steelblue") +
+  labs(x = "Academic Experience", y = "Degree of Satisfaction") +
+  ggtitle("Academic Experience")  + theme(axis.text.x = element_text(size = 7, angle = 45, hjust = 1)) + theme(plot.title = element_text(hjust = 0.5))
+
+
+
+print(bar_plot_Q1)
+
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+```{r Question2_separate data, include=FALSE  }
+
+
+##In qualtrics, responses to multiple choice questions that include more than one option will be recorded in the same cell, which prevents us from counting each response, so it is necessary to assign different responses to different cells before counting them
+
+library(tidyr)
+
+## Assign each response to a different column for multiple choice questions
+data <- separate(data, col = "Q2", into = c("Q2_1", "Q2_2", "Q2_3", "Q2_4", "Q2_5", "Q2_6"), sep = ",")
+
+
+data[is.na(data)] <- 0
+```
+
+```{r Question2_analysis, echo=TRUE  }
+# selected question columns
+selected_columns_Q2 <- c("Q2_1", "Q2_2", "Q2_3", "Q2_4", "Q2_5", "Q2_6")
+selected_data_Q2 <- data[, selected_columns_Q2]
+
+# Convert the frequency of responses for each option into a frequency table
+selected_matrix_Q2 <- as.matrix(selected_data_Q2)
+selected_vector_Q2 <- as.vector(selected_matrix_Q2)
+selected_vector_Q2 <- selected_vector_Q2[selected_vector_Q2 != 0]
+frequency_table_Q2 <- table(selected_vector_Q2)
+
+#Create a vector of question options to correspond to the numbers recorded for each answer
+x_labels <- c("Lack of resources", "Competition with peers", "Others", "No answer")
+
+#if more choice showed in data, add c = ("Workload, "Relationship with advisors") to xlabels
+
+# bar plot
+bar_plot_Q2 <- barplot(frequency_table_Q2, main = " Concerns Affecting Academic Performance", xlab = "Answers", ylab = "Frequency", names.arg = x_labels, cex.names = 0.8)
+
+
+```
+
+
+```{r Question4, echo=TRUE  }
+## The options for these questions measure the degree of respondent agreement or disagreement, and to show the degree to which respondents agreed with each aspect of the academic experience, I calculated the mean of the answer scores for each aspect and used bar charts to show the differences in the mean scores for the different aspects of the scores
+
+#library(ggplot2)
+
+## In this question, the higher the score for each indicator, the higher the average level of satisfaction across all respondents.
+
+
+##Simplify question options to words for better display in bar charts
+
+# Overall, I am satisfied with the supervision from my PhD advisor - Overall satisfaction with supervisor
+# My supervisor has the skills and subject knowledge to support my research - Skills and subject knowledge
+# I have regular contact with my supervisor, appropriate for my needs - Regular contact
+# My supervisor has high accessibility (e.g., availability for meetings, responsiveness to emails) - Accessibility
+# My supervisor provides feedback that helps me direct my research activities - Research feedback
+# My supervisor helps me to identify my training and development needs as a researcher - Development support
+# My supervisor shows enough encouragement and understanding to me -  Empathetic support
+
+# selected question columns for generating mean value
+selected_columns_Q4 <- c("Q4_1", "Q4_2", "Q4_3", "Q4_4", "Q4_5", "Q4_6", "Q4_7")
+
+# calculate mean values
+mean_values_Q4 <- colMeans(data[selected_columns_Q4])
+
+# bar plot
+bar_plot_Q4 <- ggplot() +
+  geom_bar(data = data.frame(mean_values_Q4), aes(x =c("Overall satisfaction with supervisor", "Skills and subject knowledge", "Regular contact", "Accessibility", "Research feedback", "Development support","Empathetic support"), y = mean_values_Q4),
+           stat = "identity", fill = "steelblue") +
+  labs(x = "Supervision", y = "Degree of Satisfaction") +
+  ggtitle("Satisfaction with Supervisor")  + theme(axis.text.x = element_text(size = 7, angle = 45, hjust = 1)) + theme(plot.title = element_text(hjust = 0.5))
+
+
+
+print(bar_plot_Q4)
+
+
+```
+```{r Question6, echo=TRUE  }
+## The options for these questions measure the degree of respondent agreement or disagreement, and to show the degree to which respondents agreed with each aspect of the academic experience, I calculated the mean of the answer scores for each aspect and used bar charts to show the differences in the mean scores for the different aspects of the scores
+
+#library(ggplot2)
+
+## In this question, the higher the score for each indicator, the higher the average level of satisfaction across all respondents.
+
+
+##Simplify question options to words for better display in bar charts
+
+# I have a suitable working space when I am on campus - Working space
+# There is appropriate access to datasets needed to support my research - Access to datasets
+# There is appropriate access to software needed to support my research - Access to software
+# There is appropriate access to online journals and books needed to support my research - Access to online journals and books
+
+
+
+
+# selected question columns for generating mean value
+selected_columns_Q6 <- c("Q6_1", "Q6_2", "Q6_3", "Q6_4")
+
+# calculate mean values
+mean_values_Q6 <- colMeans(data[selected_columns_Q6])
+
+# bar plot
+bar_plot_Q6 <- ggplot() +
+  geom_bar(data = data.frame(mean_values_Q6), aes(x =c("Working space", "Access to datasets", "Access to software", "Access to online journals and books"), y = mean_values_Q6),
+           stat = "identity", fill = "steelblue") +
+  labs(x = "Resources", y = "Degree of Satisfaction") +
+  ggtitle("Satisfaction with Resources")  + theme(axis.text.x = element_text(size = 6, angle = 30, hjust = 1))+ theme(plot.title = element_text(hjust = 0.5))
+
+
+
+print(bar_plot_Q6)
+
+
+```
+
+
+
+```{r Question8, echo=TRUE  }
+## The options for these questions measure the degree of respondent agreement or disagreement, and to show the degree to which respondents agreed with each aspect of the academic experience, I calculated the mean of the answer scores for each aspect and used bar charts to show the differences in the mean scores for the different aspects of the scores
+
+#library(ggplot2)
+
+## In this question, the higher the score for each indicator, the higher the average level of satisfaction across all respondents.
+
+
+##Simplify question options to words for better display in bar charts
+
+# Your overall mental health over the past year is good - Overall mental health
+# There is appropriate access to mental health support when needed - Access to mental health support
+# I feel a sense of belonging at my institution - Sense of belonging
+# There are sufficient opportunities to interact with other postgraduate research students - Ample student interaction
+# Overall, my work and life are balanced - Work-life balance
+# I am satisfied with my current financial situation - Financial situation
+
+# selected question columns for generating mean value
+selected_columns_Q8 <- c("Q8_1", "Q8_2", "Q8_3", "Q8_4", "Q8_5", "Q8_6")
+
+# calculate mean values
+mean_values_Q8 <- colMeans(data[selected_columns_Q8])
+
+# bar plot
+bar_plot_Q8 <- ggplot() +
+  geom_bar(data = data.frame(mean_values_Q8), aes(x =c("Overall mental health", "Access to mental health support", "Sense of belonging", "Ample student interaction", "Work-life balance", "Financial situation"), y = mean_values_Q8),
+           stat = "identity", fill = "steelblue") +
+  labs(x = "Mental Well-being and Support", y = "Degree of Satisfaction") +
+  ggtitle("Satisfaction with Mental Well-being and Support")  + theme(axis.text.x = element_text(size = 7, angle = 45, hjust = 1))+ theme(plot.title = element_text(hjust = 0.5))
+
+
+
+print(bar_plot_Q8)
+
+
+```
+
+```{r Question11, echo=TRUE  }
+## The options for these questions measure the degree of respondent agreement or disagreement, and to show the degree to which respondents agreed with each aspect of the academic experience, I calculated the mean of the answer scores for each aspect and used bar charts to show the differences in the mean scores for the different aspects of the scores
+
+#library(ggplot2)
+
+## In this question, the higher the score for each indicator, the higher the average level of satisfaction across all respondents.
+
+
+##Simplify question options to words for better display in bar charts
+
+# My program provides useful career instructions and consultation - Career instructions and consultation
+# There are many career development opportunities provided by department/university (e.g., workshops, networking events, job fairs) - Career development opportunities
+# As a result of my research degree programme I feel well prepared for my future career - Career preparedness
+# My ability to manage projects has developed during my programme - 
+# My ability to communicate information effectively to diverse audiences has developed during my programme - Communication skills
+# I have developed contacts or professional networks during my programme - Contacts or professional networks
+
+
+# selected question columns for generating mean value
+selected_columns_Q11 <- c("Q11_1", "Q11_2", "Q11_3", "Q11_4", "Q11_5", "Q11_6")
+
+# calculate mean values
+mean_values_Q11 <- colMeans(data[selected_columns_Q11])
+
+# bar plot
+bar_plot_Q11 <- ggplot() +
+  geom_bar(data = data.frame(mean_values_Q11), aes(x =c("Career instructions and consultation", "Career development opportunities", "Career preparedness", "Enhanced project skills", "Communication skills", "Contacts or professional networks"), y = mean_values_Q11),
+           stat = "identity", fill = "steelblue") +
+  labs(x = "Professional Development and Job Market", y = "Degree of Satisfaction") +
+  ggtitle("Professional Development and Job Market")  + theme(axis.text.x = element_text(size = 6, angle = 30, hjust = 1))+ theme(plot.title = element_text(hjust = 0.5))
+
+
+
+print(bar_plot_Q11)
+```
+
+```{r Question12, echo=TRUE  }
+#Q12
+##Separating multiple-choice questions
+
+#library(tidyr)
+
+data <- separate(data, col = "Q12", into = c("Q12_1", "Q12_2", "Q12_3", "Q12_4", "Q12_5", "Q12_6"), sep = ",")
+
+
+data[is.na(data)] <- 0
+
+
+
+
+
+```
+
+
+```{r Question12_analysis, echo=TRUE  }
+# selected question columns
+selected_columns_Q12 <- c("Q12_1", "Q12_2", "Q12_3", "Q12_4", "Q12_5", "Q12_6")
+selected_data_Q12 <- data[, selected_columns_Q12]
+
+# Convert the frequency of responses for each option into a frequency table
+selected_matrix_Q12 <- as.matrix(selected_data_Q12)
+selected_vector_Q12 <- as.vector(selected_matrix_Q12)
+selected_vector_Q12 <- selected_vector_Q12[selected_vector_Q12 != 0]
+frequency_table_Q12 <- table(selected_vector_Q12)
+
+#Create a vector of question options to correspond to the numbers recorded for each answer
+x_labels <- c("Lack of opportunities", "Not clear","Job security", "Work-life balance", "Salary expectations" )
+
+##if needed, add "Others" to x_labels
+
+# bar plot
+bar_plot_Q12 <- barplot(frequency_table_Q12, main = "Main Concerns about the Job Market", xlab = "Answers", ylab = "Frequency", names.arg = x_labels, cex.names = 0.6)
+
+```
+
+
+
+```{r Question13, echo=TRUE  }
+#Q13
+##Separating multiple-choice questions
+
+#library(tidyr)
+
+data <- separate(data, col = "Q13", into = c("Q13_1", "Q13_2", "Q13_3", "Q13_4", "Q13_5", "Q13_6","Q13_7","Q13_8"), sep = ",")
+
+
+data[is.na(data)] <- 0
+
+
+
+
+
+```
+
+
+```{r Question13_analysis, echo=TRUE  }
+# selected question columns
+selected_columns_Q13 <- c("Q13_1", "Q13_2", "Q13_3", "Q13_4", "Q13_5", "Q13_6", "Q13_7", "Q13_8")
+selected_data_Q13 <- data[, selected_columns_Q13]
+
+# Convert the frequency of responses for each option into a frequency table
+selected_matrix_Q13 <- as.matrix(selected_data_Q13)
+selected_vector_Q13 <- as.vector(selected_matrix_Q13)
+selected_vector_Q13 <- selected_vector_Q13[selected_vector_Q13 != 0]
+frequency_table_Q13 <- table(selected_vector_Q13)
+
+#Create a vector of question options to correspond to the numbers recorded for each answer
+x_labels <- c("Academic career in higher education", "Research career in higher education", "Research career outside higher education", "Self-employment " )
+
+##if needed, add "Others" to x_labels
+
+# bar plot
+bar_plot_Q13 <- barplot(frequency_table_Q13, main = "Future Plan", xlab = "Answers", ylab = "Frequency", names.arg = x_labels, cex.names = 0.45)
+
+```
+
+
+
+
+
