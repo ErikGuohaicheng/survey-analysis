@@ -1,8 +1,8 @@
 ---
-title: "Phd survey"
+title: "Phd survey report"
 author: "Haicheng Guo"
 date: "2024-01-21"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -11,9 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 
 
@@ -26,14 +24,17 @@ data <- read.csv("test_data.csv", header = TRUE)
 
 
 
+This is an analysis for the survey among the M.Phil./Ph.D. students of the Department of Economics to better understand their experiences, concerns, and any suggestions they might have regarding the Ph.D. program. This analysis is an important initiative to help us enhance the overall quality of the program and address any areas of concern.
+The survey is divided into 6 sections, which are 1. Academic Experience
+;2. Supervision;3. Resources;4. Mental Well-being and Support;5. Professional Development and Job Market;6. Feedback and Suggestions.We collected and analysed the corresponding outcome data.
 
 
-## Including Plots
 
 
 
 
-```{r Question1, echo=TRUE  }
+
+```{r Question1, echo=FALSE  }
 ## The options for these questions measure the degree of respondent agreement or disagreement, and to show the degree to which respondents agreed with each aspect of the academic experience, I calculated the mean of the answer scores for each aspect and used bar charts to show the differences in the mean scores for the different aspects of the scores.
 
 ## In this question, the higher the score for each indicator, the higher the average level of satisfaction across all respondents.
@@ -74,9 +75,96 @@ bar_plot_Q1 <- ggplot() +
 print(bar_plot_Q1)
 
 
+
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+This graphic shows the average level of student satisfaction with seven areas regarding the academic experience,the higher the score for each indicator, the higher the average level of satisfaction across all respondents.When the mean value is above 3, it means that the overall attitude of the students is satisfactory,if below 3, it means unsatisfactory.
+Overall, students were satisfied with their academic experience, with only one mean result lower than expected.While students are able to gain constructive input from their dialogue with faculties, they struggled to gain the breadth and depth of knowledge from the courses offered by the department.
+
+
+
+```{r Question1, echo=FALSE  }
+
+question_columns_Q1 <- c("Q1_1", "Q1_2", "Q1_3", "Q1_4", "Q1_5", "Q1_6", "Q1_7")
+
+frequency_Q1 <- lapply(question_columns_Q1, function(column) {
+  table(data[[column]])
+})
+
+color_mapping <- c("Definitely disagree" = "red", "Mostly disagree" = "green", "Neither agree nor disagree" = "blue", "Mostly agree" = "yellow", "Definitely agree" = "purple")
+
+# 绘制柱形图
+par(mfrow = c(2, 4))  
+
+for (i in 1:length(question_columns_Q1)) {
+  values <- names(frequency_Q1[[i]])
+  values <- factor(values, levels = 1:5)
+  
+  # 根据颜色映射字典获取每个类别的颜色
+  color <- color_mapping[values]
+  
+  # 设置柱体颜色
+  barplot(frequency_Q1[[i]], 
+          main = question_columns_Q1[i], 
+          xlab = "Answer",
+          ylab = "Frequency", 
+          ylim = c(0, max(unlist(frequency_Q1))), 
+          col = color,
+          names.arg = "")  
+}
+plot.new()
+legend("center", 
+       legend = names(color_mapping), 
+       fill = unname(color_mapping), 
+       title = "Answer",
+cex = 0.6)
+
+
+```
+
+
+question_columns_Q1 <- c("Q1_1", "Q1_2", "Q1_3", "Q1_4", "Q1_5", "Q1_6", "Q1_7")
+
+frequency_Q1 <- lapply(question_columns_Q1, function(column) {
+  table(data[[column]])
+})
+
+# 绘制柱形图
+par(mfrow = c(2, 4))  # 将图形分为2行4列
+
+for (i in 1:length(question_columns_Q1)) {
+  values <- names(frequency_Q1[[i]])  # 获取当前子图的值
+  values <- factor(values, levels = 1:5)  # 转换为因子，并指定所有可能的级别
+  
+  barplot(frequency_Q1[[i]], 
+          main = question_columns_Q1[i], 
+          xlab = "Answer",
+          ylab = "Frequency", 
+          ylim = c(0, max(unlist(frequency_Q1))), 
+          col = rainbow(length(frequency_Q1[[i]])),
+          names.arg = values)  # 使用转换后的因子作为x轴标签
+}
+
+color_labels <- c("Definitely disagree", "Mostly disagree", "Neither agree nor disagree", "Mostly agree", "Definitely agree")
+color_palette <- rainbow(length(color_labels))
+
+plot.new()
+legend("center", 
+       legend = color_labels, 
+       fill = color_palette, 
+       title = "Answer",
+       cex = 0.6)
+
+
+
+
+
+
+
+To further understand how the student evaluated each aspect of the academic experience, we further showed all responses to each question.
 
 
 ```{r Question2_separate data, include=FALSE  }
@@ -93,7 +181,7 @@ data <- separate(data, col = "Q2", into = c("Q2_1", "Q2_2", "Q2_3", "Q2_4", "Q2_
 data[is.na(data)] <- 0
 ```
 
-```{r Question2_analysis, echo=TRUE  }
+```{r Question2_analysis, echo=FALSE  }
 # selected question columns
 selected_columns_Q2 <- c("Q2_1", "Q2_2", "Q2_3", "Q2_4", "Q2_5", "Q2_6")
 selected_data_Q2 <- data[, selected_columns_Q2]
@@ -116,7 +204,34 @@ bar_plot_Q2 <- barplot(frequency_table_Q2, main = " Concerns Affecting Academic 
 ```
 
 
-```{r Question4, echo=TRUE  }
+
+
+
+
+```{r Question3, echo=FALSE  }
+
+# Print text information
+for (i in 1:nrow(data)) {
+  text <- data[i, "Q2_6_TEXT"]
+  if (!is.na(text) && text != "") {
+    
+    text <- gsub("^\\[\\d+\\]\\s*", "", text)
+    
+
+    cat(paste("Responder", i, ":", text), "\n\n")
+  }
+}
+
+```
+
+
+
+
+
+
+
+
+```{r Question4, echo=FALSE  }
 ## The options for these questions measure the degree of respondent agreement or disagreement, and to show the degree to which respondents agreed with each aspect of the academic experience, I calculated the mean of the answer scores for each aspect and used bar charts to show the differences in the mean scores for the different aspects of the scores
 
 #library(ggplot2)
@@ -153,6 +268,76 @@ print(bar_plot_Q4)
 
 
 ```
+
+
+
+
+
+
+
+```{r Question4, echo=FALSE  }
+
+# 问题列名
+question_columns_Q4 <- c("Q4_1", "Q4_2", "Q4_3", "Q4_4", "Q4_5", "Q4_6", "Q4_7")
+
+frequency_Q4 <- lapply(question_columns_Q4, function(column) {
+  table(data[[column]])
+})
+
+color_mapping <- c("Definitely disagree" = "red", "Mostly disagree" = "green", "Neither agree nor disagree" = "blue", "Mostly agree" = "yellow", "Definitely agree" = "purple")
+
+# 绘制柱形图
+par(mfrow = c(2, 4))  
+
+for (i in 1:length(question_columns_Q4)) {
+  values <- names(frequency_Q4[[i]])
+  values <- factor(values, levels = 1:5)
+  
+  # 根据颜色映射字典获取每个类别的颜色
+  color <- color_mapping[values]
+  
+  # 设置柱体颜色
+  barplot(frequency_Q4[[i]], 
+          main = question_columns_Q4[i], 
+          xlab = "Answer",
+          ylab = "Frequency", 
+          ylim = c(0, max(unlist(frequency_Q4))), 
+          col = color,
+          names.arg = values)  
+}
+plot.new()
+legend("center", 
+       legend = names(color_mapping), 
+       fill = unname(color_mapping), 
+       title = "Answer",
+cex = 0.6)
+
+
+
+```
+
+
+
+
+```{r Question5, echo=FALSE  }
+
+# Print text information
+for (i in 1:nrow(data)) {
+  text_Q5 <- data[i, "Q5"]
+  if (!is.na(text_Q5) && text_Q5 != "") {
+    
+    text_Q5 <- gsub("^\\[\\d+\\]\\s*", "", text_Q5)
+    
+
+    cat(paste("Responder", i, ":", text_Q5), "\n\n")
+  }
+}
+
+```
+
+
+
+
 ```{r Question6, echo=TRUE  }
 ## The options for these questions measure the degree of respondent agreement or disagreement, and to show the degree to which respondents agreed with each aspect of the academic experience, I calculated the mean of the answer scores for each aspect and used bar charts to show the differences in the mean scores for the different aspects of the scores
 
@@ -191,9 +376,68 @@ print(bar_plot_Q6)
 
 ```
 
+```{r Question6, echo=FALSE  }
+
+# 问题列名
+question_columns_Q6 <- c("Q6_1", "Q6_2", "Q6_3", "Q6_4")
+
+frequency_Q6 <- lapply(question_columns_Q6, function(column) {
+  table(data[[column]])
+})
+
+color_mapping <- c("Definitely disagree" = "red", "Mostly disagree" = "green", "Neither agree nor disagree" = "blue", "Mostly agree" = "yellow", "Definitely agree" = "purple")
+
+# 绘制柱形图
+par(mfrow = c(2, 4))  
+
+for (i in 1:length(question_columns_Q6)) {
+  values <- names(frequency_Q6[[i]])
+  values <- factor(values, levels = 1:5)
+  
+  # 根据颜色映射字典获取每个类别的颜色
+  color <- color_mapping[values]
+  
+  # 设置柱体颜色
+  barplot(frequency_Q6[[i]], 
+          main = question_columns_Q6[i], 
+          xlab = "Answer",
+          ylab = "Frequency", 
+          ylim = c(0, max(unlist(frequency_Q6))), 
+          col = color,
+          names.arg = values)  
+}
+plot.new()
+legend("center", 
+       legend = names(color_mapping), 
+       fill = unname(color_mapping), 
+       title = "Answer",
+cex = 0.6)
 
 
-```{r Question8, echo=TRUE  }
+```
+
+
+
+```{r Question7, echo=FALSE  }
+
+# Print text information
+for (i in 1:nrow(data)) {
+  text_Q7 <- data[i, "Q7"]
+  if (!is.na(text_Q7) && text_Q7 != "") {
+    
+    text_Q7 <- gsub("^\\[\\d+\\]\\s*", "", text_Q7)
+    
+
+    cat(paste("Responder", i, ":", text_Q7), "\n\n")
+  }
+}
+
+```
+
+
+
+
+```{r Question8, echo=FALSE  }
 ## The options for these questions measure the degree of respondent agreement or disagreement, and to show the degree to which respondents agreed with each aspect of the academic experience, I calculated the mean of the answer scores for each aspect and used bar charts to show the differences in the mean scores for the different aspects of the scores
 
 #library(ggplot2)
@@ -230,7 +474,95 @@ print(bar_plot_Q8)
 
 ```
 
-```{r Question11, echo=TRUE  }
+
+
+```{r Question1, echo=FALSE  }
+
+# 问题列名
+question_columns_Q8 <- c("Q8_1", "Q8_2", "Q8_3", "Q8_4", "Q8_5", "Q8_6")
+
+frequency_Q8 <- lapply(question_columns_Q8, function(column) {
+  table(data[[column]])
+})
+
+color_mapping <- c("Definitely disagree" = "red", "Mostly disagree" = "green", "Neither agree nor disagree" = "blue", "Mostly agree" = "yellow", "Definitely agree" = "purple")
+
+# 绘制柱形图
+par(mfrow = c(2, 4))  
+
+for (i in 1:length(question_columns_Q8)) {
+  values <- names(frequency_Q8[[i]])
+  values <- factor(values, levels = 1:5)
+  
+  # 根据颜色映射字典获取每个类别的颜色
+  color <- color_mapping[values]
+  
+  # 设置柱体颜色
+  barplot(frequency_Q8[[i]], 
+          main = question_columns_Q8[i], 
+          xlab = "Answer",
+          ylab = "Frequency", 
+          ylim = c(0, max(unlist(frequency_Q8))), 
+          col = color,
+          names.arg = values)  
+}
+plot.new()
+legend("center", 
+       legend = names(color_mapping), 
+       fill = unname(color_mapping), 
+       title = "Answer",
+cex = 0.6)
+
+
+```
+
+
+
+
+
+
+
+
+
+```{r Question9, echo=FALSE  }
+
+# Print text information
+for (i in 1:nrow(data)) {
+  text_Q9 <- data[i, "Q9"]
+  if (!is.na(text_Q9) && text_Q9 != "") {
+    
+    text_Q9 <- gsub("^\\[\\d+\\]\\s*", "", text_Q9)
+    
+
+    cat(paste("Responder", i, ":", text_Q9), "\n\n")
+  }
+}
+
+```
+
+
+
+```{r Question10, echo=FALSE  }
+
+# Print text information
+for (i in 1:nrow(data)) {
+  text_Q10 <- data[i, "Q10"]
+  if (!is.na(text_Q10) && text_Q10 != "") {
+    
+    text_Q10 <- gsub("^\\[\\d+\\]\\s*", "", text_Q10)
+    
+
+    cat(paste("Responder", i, ":", text_Q10), "\n\n")
+  }
+}
+
+```
+
+
+
+
+
+```{r Question11, echo=FALSE  }
 ## The options for these questions measure the degree of respondent agreement or disagreement, and to show the degree to which respondents agreed with each aspect of the academic experience, I calculated the mean of the answer scores for each aspect and used bar charts to show the differences in the mean scores for the different aspects of the scores
 
 #library(ggplot2)
@@ -266,7 +598,52 @@ bar_plot_Q11 <- ggplot() +
 print(bar_plot_Q11)
 ```
 
-```{r Question12, echo=TRUE  }
+
+
+```{r Question11, echo=FALSE  }
+
+# 问题列名
+question_columns_Q11 <- c("Q11_1", "Q11_2", "Q11_3", "Q11_4", "Q11_5", "Q11_6")
+
+frequency_Q11 <- lapply(question_columns_Q11, function(column) {
+  table(data[[column]])
+})
+
+color_mapping <- c("Definitely disagree" = "red", "Mostly disagree" = "green", "Neither agree nor disagree" = "blue", "Mostly agree" = "yellow", "Definitely agree" = "purple")
+
+# 绘制柱形图
+par(mfrow = c(2, 4))  
+
+for (i in 1:length(question_columns_Q11)) {
+  values <- names(frequency_Q11[[i]])
+  values <- factor(values, levels = 1:5)
+  
+  # 根据颜色映射字典获取每个类别的颜色
+  color <- color_mapping[values]
+  
+  # 设置柱体颜色
+  barplot(frequency_Q11[[i]], 
+          main = question_columns_Q11[i], 
+          xlab = "Answer",
+          ylab = "Frequency", 
+          ylim = c(0, max(unlist(frequency_Q11))), 
+          col = color,
+          names.arg = values)  
+}
+plot.new()
+legend("center", 
+       legend = names(color_mapping), 
+       fill = unname(color_mapping), 
+       title = "Answer",
+cex = 0.6)
+
+
+```
+
+
+
+
+```{r Question12, echo=FALSE  }
 #Q12
 ##Separating multiple-choice questions
 
@@ -284,7 +661,7 @@ data[is.na(data)] <- 0
 ```
 
 
-```{r Question12_analysis, echo=TRUE  }
+```{r Question12_analysis, echo=FALSE  }
 # selected question columns
 selected_columns_Q12 <- c("Q12_1", "Q12_2", "Q12_3", "Q12_4", "Q12_5", "Q12_6")
 selected_data_Q12 <- data[, selected_columns_Q12]
@@ -307,7 +684,7 @@ bar_plot_Q12 <- barplot(frequency_table_Q12, main = "Main Concerns about the Job
 
 
 
-```{r Question13, echo=TRUE  }
+```{r Question13, echo=FALSE  }
 #Q13
 ##Separating multiple-choice questions
 
@@ -325,7 +702,7 @@ data[is.na(data)] <- 0
 ```
 
 
-```{r Question13_analysis, echo=TRUE  }
+```{r Question13_analysis, echo=FALSE  }
 # selected question columns
 selected_columns_Q13 <- c("Q13_1", "Q13_2", "Q13_3", "Q13_4", "Q13_5", "Q13_6", "Q13_7", "Q13_8")
 selected_data_Q13 <- data[, selected_columns_Q13]
@@ -349,4 +726,53 @@ bar_plot_Q13 <- barplot(frequency_table_Q13, main = "Future Plan", xlab = "Answe
 
 
 
+```{r Question14, echo=FALSE  }
 
+# Print text information
+for (i in 1:nrow(data)) {
+  text_Q14 <- data[i, "Q14"]
+  if (!is.na(text_Q14) && text_Q14 != "") {
+    
+    text_Q14 <- gsub("^\\[\\d+\\]\\s*", "", text_Q14)
+    
+
+    cat(paste("Responder", i, ":", text_Q14), "\n\n")
+  }
+}
+
+```
+
+
+
+```{r Question15, echo=FALSE  }
+
+# Print text information
+for (i in 1:nrow(data)) {
+  text_Q15 <- data[i, "Q15"]
+  if (!is.na(text_Q15) && text_Q15 != "") {
+    
+    text_Q15 <- gsub("^\\[\\d+\\]\\s*", "", text_Q15)
+    
+
+    cat(paste("Responder", i, ":", text_Q15), "\n\n")
+  }
+}
+
+```
+
+
+```{r Question16, echo=FALSE  }
+
+# Print text information
+for (i in 1:nrow(data)) {
+  text_Q16 <- data[i, "Q16"]
+  if (!is.na(text_Q16) && text_Q16 != "") {
+    
+    text_Q16 <- gsub("^\\[\\d+\\]\\s*", "", text_Q16)
+    
+
+    cat(paste("Responder", i, ":", text_Q16), "\n\n")
+  }
+}
+
+```
