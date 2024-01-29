@@ -26,12 +26,12 @@ data <- read.csv("test_data.csv", header = TRUE)
 
 This is an analysis for the survey among the M.Phil./Ph.D. students of the Department of Economics to better understand their experiences, concerns, and any suggestions they might have regarding the Ph.D. program. This analysis is an important initiative to help us enhance the overall quality of the program and address any areas of concern.
 The survey is divided into 6 sections, which are 1. Academic Experience
-;2. Supervision;3. Resources;4. Mental Well-being and Support;5. Professional Development and Job Market;6. Feedback and Suggestions.We collected and analysed the corresponding outcome data.
+;2. Supervision;3. Resources;4. Mental Well-being and Support;5. Professional Development and Job Market;6. Feedback and Suggestions.We designed questions in these six aspects and collected feedback from students and analyse them.
 
 
 
 
-
+The first part of the analysis was the academic experience, where we first used formatted questions to collect and analyse students' level of satisfaction with their academic experience in the Department of Economics, followed by an analysis of their main concerns about their academic performance, and finally their personalised opinions.
 
 
 ```{r Question1, echo=FALSE  }
@@ -81,8 +81,8 @@ print(bar_plot_Q1)
 
 
 
-This graphic shows the average level of student satisfaction with seven areas regarding the academic experience,the higher the score for each indicator, the higher the average level of satisfaction across all respondents.When the mean value is above 3, it means that the overall attitude of the students is satisfactory,if below 3, it means unsatisfactory.
-Overall, students were satisfied with their academic experience, with only one mean result lower than expected.While students are able to gain constructive input from their dialogue with faculties, they struggled to gain the breadth and depth of knowledge from the courses offered by the department.
+This graphic shows the average level of student satisfaction with seven aspects regarding the academic experience,the higher the score for each indicator, the higher the average level of satisfaction across all respondents.When the mean value is above 3, it means that the overall attitude of the students is satisfactory,if below 3, it means unsatisfactory.
+Overall, students were satisfied with their academic experience, with only one aspect lower than expected.While students are able to gain constructive input from their dialogue with faculties, they struggled to gain the breadth and depth of knowledge from the courses offered by the department.
 
 
 
@@ -126,46 +126,10 @@ cex = 0.6)
 ```
 
 
-question_columns_Q1 <- c("Q1_1", "Q1_2", "Q1_3", "Q1_4", "Q1_5", "Q1_6", "Q1_7")
 
-frequency_Q1 <- lapply(question_columns_Q1, function(column) {
-  table(data[[column]])
-})
-
-# 绘制柱形图
-par(mfrow = c(2, 4))  # 将图形分为2行4列
-
-for (i in 1:length(question_columns_Q1)) {
-  values <- names(frequency_Q1[[i]])  # 获取当前子图的值
-  values <- factor(values, levels = 1:5)  # 转换为因子，并指定所有可能的级别
-  
-  barplot(frequency_Q1[[i]], 
-          main = question_columns_Q1[i], 
-          xlab = "Answer",
-          ylab = "Frequency", 
-          ylim = c(0, max(unlist(frequency_Q1))), 
-          col = rainbow(length(frequency_Q1[[i]])),
-          names.arg = values)  # 使用转换后的因子作为x轴标签
-}
-
-color_labels <- c("Definitely disagree", "Mostly disagree", "Neither agree nor disagree", "Mostly agree", "Definitely agree")
-color_palette <- rainbow(length(color_labels))
-
-plot.new()
-legend("center", 
-       legend = color_labels, 
-       fill = color_palette, 
-       title = "Answer",
-       cex = 0.6)
-
-
-
-
-
-
-
-To further understand how the student evaluated each aspect of the academic experience, we further showed all responses to each question.
-
+In order to get a concrete picture of each student's specific attitudes towards each question, we further counted the responses to each question.
+For each question, we set five options, which included "Definitely disagree", "Mostly disagree", "Neither agree nor disagree", "Mostly agree", "Definitely agree". For each question, we counted the frequency of occurrence of each option.
+It is evident that students' dissatisfaction is mainly centred on the quantity and quality of the courses, while they are more satisfied with the relationship with faculties and the academic atmosphere.
 
 ```{r Question2_separate data, include=FALSE  }
 
@@ -203,8 +167,8 @@ bar_plot_Q2 <- barplot(frequency_table_Q2, main = " Concerns Affecting Academic 
 
 ```
 
-
-
+This graph reflects students' concerns about factors that may affect their academic performance, and we found that lack of resources was the most common concern, and that competition with peers also contributed to students' concerns.
+We also collect students' personalised comments, and We anonymised this information and show it below:
 
 
 
@@ -224,12 +188,14 @@ for (i in 1:nrow(data)) {
 
 ```
 
+From this information, we find that students expressed concerns about the courses offered by the department as well as the amount of scholarships.
 
 
 
 
 
 
+The second part of the analysis was the supervision, where we first use formatted questions to collect and analyse students' level of satisfaction with their academic experience in the Department of Economics, and then collect their personalised opinions.
 
 ```{r Question4, echo=FALSE  }
 ## The options for these questions measure the degree of respondent agreement or disagreement, and to show the degree to which respondents agreed with each aspect of the academic experience, I calculated the mean of the answer scores for each aspect and used bar charts to show the differences in the mean scores for the different aspects of the scores
@@ -269,7 +235,8 @@ print(bar_plot_Q4)
 
 ```
 
-
+This graphic shows the average level of student satisfaction with seven aspects regarding the supervision,the higher the score for each indicator, the higher the average level of satisfaction across all respondents.When the mean value is above 3, it means that the overall attitude of the students is satisfactory,if below 3, it means unsatisfactory.
+Overall, students were satisfied with their supervision. For every aspect of supervision, the average student satisfaction rating exceeded "Mostly agree". In comparison, students were most satisfied with " " and slightly less satisfied with " ".
 
 
 
@@ -317,7 +284,13 @@ cex = 0.6)
 ```
 
 
+we further counted the responses to each question about supervision.
+For each question, we set five options, which included "Definitely disagree", "Mostly disagree", "Neither agree nor disagree", "Mostly agree", "Definitely agree". For each question, we counted the frequency of occurrence of each option.
+It is evident that students have little to no dissatisfaction with every aspect of the supervision. More students expressed "Definitely agree" for "", while more students expressed "Mostly agree" for "".
 
+
+
+We also collect students' personalised comments, and We anonymised this information and show it below:
 
 ```{r Question5, echo=FALSE  }
 
@@ -336,6 +309,9 @@ for (i in 1:nrow(data)) {
 ```
 
 
+
+
+The third part of the analysis was the resources, where we first use formatted questions to collect and analyse students' level of satisfaction with their academic experience in the Department of Economics, and then collect their personalised opinions.
 
 
 ```{r Question6, echo=TRUE  }
@@ -375,6 +351,18 @@ print(bar_plot_Q6)
 
 
 ```
+
+
+
+This graphic shows the average level of student satisfaction with four aspects regarding the resources,the higher the score for each indicator, the higher the average level of satisfaction across all respondents.When the mean value is above 3, it means that the overall attitude of the students is satisfactory,if below 3, it means unsatisfactory.
+Overall, students were satisfied with their resources For every aspect of supervision, the average student satisfaction rating exceeded "Mostly agree". In comparison, students were most satisfied with " " and slightly less satisfied with " ".
+
+
+
+
+
+
+
 
 ```{r Question6, echo=FALSE  }
 
@@ -416,6 +404,7 @@ cex = 0.6)
 
 ```
 
+We also collect students' personalised comments, and We anonymised this information and show it below:
 
 
 ```{r Question7, echo=FALSE  }
@@ -540,6 +529,7 @@ for (i in 1:nrow(data)) {
 
 ```
 
+We also collect students' personalised comments, and We anonymised this information and show it below:
 
 
 ```{r Question10, echo=FALSE  }
@@ -724,6 +714,7 @@ bar_plot_Q13 <- barplot(frequency_table_Q13, main = "Future Plan", xlab = "Answe
 ```
 
 
+We also collect students' personalised comments, and We anonymised this information and show it below:
 
 
 ```{r Question14, echo=FALSE  }
@@ -742,7 +733,9 @@ for (i in 1:nrow(data)) {
 
 ```
 
+Finally, we collected feedback and suggestions from students, which we anonymised and presented in full.
 
+Below are suggestions of students for improving the PhD program in the economics department:
 
 ```{r Question15, echo=FALSE  }
 
@@ -759,6 +752,7 @@ for (i in 1:nrow(data)) {
 }
 
 ```
+Below are feedback or comments that some students would like to share:
 
 
 ```{r Question16, echo=FALSE  }
