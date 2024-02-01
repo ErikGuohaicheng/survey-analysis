@@ -18,6 +18,10 @@ knitr::opts_chunk$set(echo = FALSE)
 ## manually delete invalid survey observations (1. Respondent opened the survey but did not complete it; 2. survey not completed, although some questions were answered)   
 ## Manually copy all the text data and paste them in the suitable location of Rmarkdown file to make the exported pdf file more aesthetically pleasing.  
 ## In the second valid observation to question 8-2, the respondent chose "Not applicable" and we manually assigned a value of 0 to this observation in the raw data.  
+## require(ggplot2)
+## require(tidyr)
+## require(tinytex)
+
 setwd("D:/RA/Phd_survey")
 data <- read.csv("survey_data_numeric.csv")
 
@@ -204,25 +208,24 @@ bar_plot_Q2 <- barplot(frequency_table_Q2, main = " Figure 3. Concerns Affecting
 ### Main concerns about Academic Experience
 
 Figure 3 reflects students' concerns about factors that may affect their academic performance, and we found that lack of resources was the most common concern, and that competition with peers also contributed to students' concerns.  
-Some students also chose "Others", We recorded their detailed descriptions of this option and showed them below: 
+Some students also chose "Others", we recorded their detailed descriptions of this option and showed them below: 
 
-Living costs in HK are high, which adds financial burden to me, especially 
-if I live outside the campus.
+• Living costs in HK are high, which adds financial burden to me, especially if I live outside the campus.
 
-There is too much emphasis on theory but not the intuition. I personally think theory and mathematics can be easily accessible by reading books, but the main role of an instructor is to clear out the intuition. Most offered courses are either theory or macro-related as well. The offered empirical courses do not have  high quality. For example, I took labor economics  by professor Xuan. She would appaer very unprepared and would spend time to remember what her slides were meant for. After a few sessions, all students turn their camera off and did not truely participate. I also took applies econometrics with professor Koheil. That could also had emphasis on theory rather than intuition. I personally think we need more applied professors who are willing to entract with phd students (unfortunately, a few applied faculty do not seem to be accessible).
+• There is too much emphasis on theory but not the intuition. I personally think theory and mathematics can be easily accessible by reading books, but the main role of an instructor is to clear out the intuition. Most offered courses are either theory or macro-related as well. The offered empirical courses do not have  high quality. For example, I took labor economics  by professor Xuan. She would appaer very unprepared and would spend time to remember what her slides were meant for. After a few sessions, all students turn their camera off and did not truely participate. I also took applies econometrics with professor Koheil. That could also had emphasis on theory rather than intuition. I personally think we need more applied professors who are willing to entract with phd students (unfortunately, a few applied faculty do not seem to be accessible).
 
 
 ### Other Comments about Academic Experience
 
-We also collect students' personalised comments about their academic experience, and We anonymised this information and show it below:
+We also collect students' personalised comments about their academic experience, and we anonymised this information and show it below:
 
-We have a small department/cohort, which means it nearly impossible to provide enough courses for every field and student. Also, UST is far away from other HK universities, which makes the cost of time/transportation/energy high if I want to make use of the resourses of courses/seminars in other universities. It seems that there is nearly no perfect solution for the problem of limited field courses.
+• We have a small department/cohort, which means it nearly impossible to provide enough courses for every field and student. Also, UST is far away from other HK universities, which makes the cost of time/transportation/energy high if I want to make use of the resourses of courses/seminars in other universities. It seems that there is nearly no perfect solution for the problem of limited field courses.
 
-I have noticed that recently our department has started organizing dinners, talks, seminars, and happy hours. Thank you so much for doing so. They are extremely helpful. It breaks the barrier between students and faculty members. 
+• I have noticed that recently our department has started organizing dinners, talks, seminars, and happy hours. Thank you so much for doing so. They are extremely helpful. It breaks the barrier between students and faculty members. 
 
-The courses and seminars are highly concentrated in certain fields.
+• The courses and seminars are highly concentrated in certain fields.
 
-There is few courses and seminars in applied micro (compared with the other field). Is it possible to add more courses and seminars in the future?
+• There is few courses and seminars in applied micro (compared with the other field). Is it possible to add more courses and seminars in the future?
 
 
 
@@ -238,14 +241,13 @@ The second part of the analysis was the supervision, where we first use formatte
 In this section, we begin by categorising supervision into seven aspects and setting a question for each aspect, where students have six options to choose from, namely: "Definitely disagree", "Mostly disagree", "Neither agree nor disagree", "Mostly agree", "Definitely agree","Not applicable". We assign a value of 1 to "Definitely disagree", 2 to "Mostly disagree" and a value of 5 to "Definitely agree" in order to move from complete disagreement to complete agreement. For "Not applicable",we set value of 0.  
 We refined the questions into descriptions of a particular aspect to better serve as labels for the statistical graphs, and these labels are shown below, each corresponding to an original question in the survey:
 
-Overall satisfaction: Overall, I am satisfied with the supervision from my PhD advisor.  
-Skills and subject knowledge: My supervisor has the skills and subject knowledge to support my research.
-
-Regular contact: I have regular contact with my supervisor, appropriate for my needs.  
-Accessibility: My supervisor has high accessibility (e.g., availability for meetings, responsiveness to emails).  
-Research feedback: My supervisor provides feedback that helps me direct my research activities.  
-Development support: My supervisor helps me to identify my training and development needs as a researcher.
-
+Overall satisfaction: Overall, I am satisfied with the supervision from my PhD advisor.   
+Skills and subject knowledge: My supervisor has the skills and subject knowledge to support 
+my research.  
+Regular contact: I have regular contact with my supervisor, appropriate for my needs.   
+Accessibility: My supervisor has high accessibility (e.g., availability for meetings, responsiveness to emails).   
+Research feedback: My supervisor provides feedback that helps me direct my research activities.   
+Development support: My supervisor helps me to identify my training and development needs as a researcher.  
 Empathetic support: My supervisor shows enough encouragement and understanding to me.  
 
 
@@ -491,12 +493,12 @@ Figure 7 shows that students have little to no dissatisfaction with most aspect 
 
 We also collect students' personalised comments about resources, and we anonymised this information and show it below:
 
-The office is sometimes noisy since professors will walk in directly 
+• The office is sometimes noisy since professors will walk in directly 
 and talk to their students while others are working.
 
-We do not have the school-funded licenses for softwares like Stata and MATLAB, which seems to be essential for Biz school PhDs.
+• We do not have the school-funded licenses for softwares like Stata and MATLAB, which seems to be essential for Biz school PhDs.
 
-I recommend our department reserve a room for PhD students for their Zoom meetings. 
+• I recommend our department reserve a room for PhD students for their Zoom meetings. 
 Our university failed to provide some important software to us, such as Matlab. Even though around 500 HKD subsidy is available, it is not enough.
 
 ## Part 4. Mental Well-being and Support
@@ -620,21 +622,20 @@ cex = 1)
 
 We further counted the responses to each question about supervision.
 For each question, we set five options, which included "Definitely disagree", "Mostly disagree", "Neither agree nor disagree", "Mostly agree", "Definitely agree". For each question, we counted the frequency of occurrence of each option. We showed results in Figure 9.   
-A few students expressed extreme dissatisfaction with their current state of mind, which was mainly reflected in a lack of belonging to the department and a lack of interaction with fellow students. However, at the same time, the majority of students expressed satisfaction with access to mental health support when needed. In addition, a few students expressed concerns about work-life balance and their financial situation.
-
+A few students expressed extreme dissatisfaction with their current state of mind, which was mainly reflected in a lack of belonging to the department and a lack of interaction with fellow students. However, at the same time, the majority of students expressed satisfaction with access to mental health support when needed. In addition, a few students expressed concerns about work-life balance and their financial situation.  
 In addition, some students describe specific mental health challenges they have faced recently:
 
-Could not find a clear research career path and research plan while time flied.
+• Could not find a clear research career path and research plan while time flied.
 
-I always hear pessimistic news from my peers about the ECON academic job market, which is increasingly to be more and more competitive. Those lower my confidence and enthusiasm, and increase my anxiety and depression. Besides, senior students/JMCs are excellent and successful in the job market, which boosts my confidence recently, but also gives my some pressure, as I may not do as well as they do, and have negative effects on the department placements in the future.
+• I always hear pessimistic news from my peers about the ECON academic job market, which is increasingly to be more and more competitive. Those lower my confidence and enthusiasm, and increase my anxiety and depression. Besides, senior students/JMCs are excellent and successful in the job market, which boosts my confidence recently, but also gives my some pressure, as I may not do as well as they do, and have negative effects on the department placements in the future.
 
-Stress from the uncertainty about the future.
+• Stress from the uncertainty about the future.
 
 ### Other Comments about Mental Well-being and Support
 
-Finally, we also collect students' personalised comments about mental well-being and support, and We anonymised this information and show it below:
+Finally, we also collect students' personalised comments about mental well-being and support, and we anonymised this information and show it below:
 
-The CPI of campus dinning and living grows much faster than our PGS.
+• The CPI of campus dinning and living grows much faster than our PGS.
 
 
 ## Part 5. Professional Development and Job Market
@@ -680,7 +681,7 @@ bar_plot_Q11 <- ggplot() +
 , y = mean_values_Q11),
            stat = "identity", fill = "steelblue") +
   labs(x = "Professional Development and Job Market (Mean Value)", y = "Degree of Satisfaction")+ 
-  ggtitle("Figure 10.Professional Development and Job Market (Mean Value)")  + theme(axis.text.x = element_text(size = 6, angle = 30, hjust = 1))+ theme(plot.title = element_text(hjust = 0.5)) 
+  ggtitle("Figure 10. Professional Development and Job Market (Mean Value)")  + theme(axis.text.x = element_text(size = 5, angle = 30, hjust = 1))+ theme(plot.title = element_text(hjust = 0.5)) 
 
 
 
@@ -853,15 +854,12 @@ cex = 0.7)
 
 ### Plans for the future
 
-Figure 13 reflects students' plans after graduation.   
-Most students plan to continue pursuing their careers in academia after graduation, while others plan to seek research jobs in industry, and a few plan to continue their careers in other fields, such as teaching track or self-employment.  
+Figure 13 reflects students' plans after graduation. Most students plan to continue pursuing their careers in academia after graduation, while others plan to seek research jobs in industry, and a few plan to continue their careers in other fields, such as teaching track or self-employment.   
+We also collect students' descriptions about any career development support or resources that would be helpful to them, and we anonymised this information and show it below:
 
+• Overseas job opportunities.
 
-We also collect students' descriptions about any career development support or resources that would be helpful to them, and We anonymised this information and show it below:
-
-Overseas job opportunities.
-
-Even though our university organizes many job fairs and career events, almost none of them fit PhD students. Also no useful instruction from the career consultation of our university. Hope more job opportunities not only in academia but also in the private sector can be introduced.
+• Even though our university organizes many job fairs and career events, almost none of them fit PhD students. Also no useful instruction from the career consultation of our university. Hope more job opportunities not only in academia but also in the private sector can be introduced.
 
 
 
@@ -875,18 +873,18 @@ Finally, we collected feedback and suggestions from students, which we anonymise
 
 Below are suggestions of students for improving the PhD program in the economics department:
 
-I wish our department can be more internationalized in terms of professor hiring, student placement and event holding. e.g. it would be great if students can have more integrated information about the overseas conference/courses/visiting opportunities.
+• I wish our department can be more internationalized in terms of professor hiring, student placement and event holding. e.g. it would be great if students can have more integrated information about the overseas conference/courses/visiting opportunities.
 
-Hire some applied professors who are willing to entract with phd students. Invite more applied professors for talks and seminars. Focus on the intuition rather than the math.
+• Hire some applied professors who are willing to entract with phd students. Invite more applied professors for talks and seminars. Focus on the intuition rather than the math.
 
-Hire more senior professors in different research fields. Offer more career consultation and instructions.
+• Hire more senior professors in different research fields. Offer more career consultation and instructions.
 
 
 ### Other Feedback or Comments
 
 Below are feedback or comments that some students would like to share:
 
-I wish our department can be more internationalized in terms of professor hiring, student placement and event holding. e.g. it would be great if students can have more integrated information about the overseas conference/courses/visiting opportunities.
+• I wish our department can be more internationalized in terms of professor hiring, student placement and event holding. e.g. it would be great if students can have more integrated information about the overseas conference/courses/visiting opportunities.
 
-Great department, friendly/supportive environment. I love her.
+• Great department, friendly/supportive environment. I love her.
 
